@@ -39,6 +39,13 @@ class _HomePageState extends State<HomePage> {
     "Yaourt": false,
     "Pain": false,
   };
+  //Radio
+  ChoixTransport choixTransport = ChoixTransport.Avion;
+  Icon iconTransport = Icon(Icons.airplanemode_active);
+  //Swtich
+  bool interrupteur = false;
+  //Slider
+  double rayonKms = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +83,72 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: checkListeCourse(),
             ),
-          )
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Radio(
+                  value: ChoixTransport.Avion,
+                  groupValue: choixTransport,
+                  onChanged: (ChoixTransport? c){
+                    setState(() {
+                      choixTransport = c!;
+                      iconTransport = Icon(Icons.airplanemode_active);
+                    });
+                  }
+              ),
+              Text("Avion"),
+              Radio(
+                  value: ChoixTransport.Bateau,
+                  groupValue: choixTransport,
+                  onChanged: (ChoixTransport? c){
+                    setState(() {
+                      choixTransport = c!;
+                      iconTransport = Icon(Icons.directions_boat);
+                    });
+                  }
+              ),
+              Text("Bateau"),
+              Radio(
+                  value: ChoixTransport.Voiture,
+                  groupValue: choixTransport,
+                  onChanged: (ChoixTransport? c){
+                    setState(() {
+                      choixTransport = c!;
+                      iconTransport = Icon(Icons.directions_car);
+                    });
+                  }
+              ),
+              Text("Voiture"),
+            ],
+          ),
+          iconTransport,
+          Switch(
+              value: interrupteur,
+              inactiveTrackColor: Colors.red,
+              activeColor: Colors.green,
+              onChanged: (bool b){
+                setState(() {
+                  interrupteur = b;
+                });
+              }
+          ),
+          Text((interrupteur) ? "Pour" : "Contre"),
+          Slider(
+              value: rayonKms,
+              min: 0,
+              max: 100,
+              divisions: 10,
+              label: rayonKms.toString(),
+              inactiveColor: Colors.black87,
+              activeColor: Colors.pinkAccent,
+              onChanged: (double d){
+                setState(() {
+                  rayonKms = d;
+                });
+              }
+          ),
+          Text("Rayon Kms = ${rayonKms}")
         ],
       ),
     );
@@ -108,5 +180,11 @@ class _HomePageState extends State<HomePage> {
 
     return l;
   }
+}
+
+enum ChoixTransport{
+  Voiture,
+  Avion,
+  Bateau
 }
 
