@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,6 +13,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: [
+        Locale("fr","FR")
+      ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -195,10 +203,23 @@ class _HomePageState extends State<HomePage> {
         lastDate: DateTime(2045),
       initialDate: DateTime.now()
     );
-    if(_dateChoisie != null){
+
+    TimeOfDay? time = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(hour: 10, minute: 25)
+    );
+
+
+    if(_dateChoisie != null && time != null){
       setState(() {
-        dateEvenement = _dateChoisie;
+        dateEvenement = _dateChoisie.add(
+            Duration(
+              hours: time.hour,
+              minutes: time.minute
+            )
+        );
       });
+      print(dateEvenement);
     }
   }
 
